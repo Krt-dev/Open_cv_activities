@@ -12,7 +12,7 @@ def main_menu():
     print("6. Activity 3 all")
     print("7. Activity 4 all")
     print("8. Activity 5 all")
-    print("9. ")
+    print("9. Secret message")
     print("10. Exit")
 
 def option1():
@@ -97,29 +97,32 @@ def option5():
     
 def option6():
     print("Activity 3 all")
-    original_image = cv2.imread('MAR10.jpg')
-
+    original_image = cv2.imread('D:\Repos\Open_cv_activities\openCVTest\Images\MAR10.jpg')
+    second_image = cv2.imread('D:\Repos\Open_cv_activities\openCVTest\Images\Log in required.png')
 
     original_image_rgb = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
+    second_image_rgb = cv2.cvtColor(second_image, cv2.COLOR_BGR2RGB)
 
-
+   
+    plt.subplot(2, 2, 1)
     plt.imshow(original_image_rgb)
     plt.title('Original Image')
     plt.axis('off')
+
+    plt.subplot(2, 2, 2)
+    plt.imshow(second_image_rgb)
+    plt.title('Second Image')
+    plt.axis('off')
+
+  
+    plt.subplot(2, 2, 3)
+    plot_histogram(original_image, 'Histogram of Original Image')
+
+    plt.subplot(2, 2, 4)
+    plot_histogram(second_image, 'Histogram of Second Image')
+
+    plt.tight_layout()
     plt.show()
-
-
-plot_histogram(original_image, 'Histogram of Original Image')
-
-
-blue_channel = original_image[:, :, 0]
-green_channel = original_image[:, :, 1]
-red_channel = original_image[:, :, 2]
-
-
-plot_histogram(blue_channel, 'Blue Channel Histogram')
-plot_histogram(green_channel, 'Green Channel Histogram')
-plot_histogram(red_channel, 'Red Channel Histogram')
     
 def option7():
     print("Activity 4 all")
@@ -154,12 +157,27 @@ def option7():
     plt.title('Histogram of Grayscale Image')
     plt.xlabel('Pixel Value')
     plt.ylabel('Frequency')
+    plt.subplot(224)
+    plt.imshow(edges, cmap='gray')
+    plt.title('Edges of the Image')
+    plt.axis('off')
+
+    plt.tight_layout()
+    plt.show()
     
 def option8():
     print("Activity 5 all")
+    image = cv2.imread('D:\Repos\Open_cv_activities\openCVTest\Images\MAR10.jpg')
+
+    display_image_with_edges_and_histogram(image)
+
+    print_image_properties(image)
+    x = 100 
+    y = 50   
+    get_pixel_value(image, x, y)
 
 def option9():
-    print("You chose Option 9")
+    print("Flat 1 lang miss pls huhuhuhu")
     
 def plot_histogram(image, title):
     histogram = cv2.calcHist([image], [0], None, [256], [0,256])
@@ -170,13 +188,76 @@ def plot_histogram(image, title):
     plt.xlim([0, 256])
     plt.show()
     
+def display_image_with_edges_and_histogram(image):
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
+    edges = cv2.Canny(gray_image, 100, 200)
+    
+    histogram = cv2.calcHist([gray_image], [0], None, [256], [0, 256])
+    
+    plt.figure(figsize=(12, 8))
+
+
+    plt.subplot(221)
+    plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    plt.title('Original Image')
+    plt.axis('off')
+
+
+    plt.subplot(222)
+    plt.imshow(edges, cmap='gray')
+    plt.title('Edges of the Image')
+    plt.axis('off')
+
+    plt.subplot(223)
+    plt.imshow(gray_image, cmap='gray')
+    plt.title('Grayscale Image')
+    plt.axis('off')
+
+
+    plt.subplot(224)
+    plt.plot(histogram, color='black')
+    plt.title('Histogram of Grayscale Image')
+    plt.xlabel('Pixel Value')
+    plt.ylabel('Frequency')
+
+    plt.tight_layout()
+    plt.show()
+
+def print_image_properties(image):
+    
+    filename = "D:\Repos\Open_cv_activities\openCVTest\Images\MAR10.jpg"  
+    format = "RGB"  
+    height, width, _ = image.shape
+    size = image.size
+    
+    print("Image Properties:")
+    print("Filename:", filename)
+    print("Format:", format)
+    print("Width:", width)
+    print("Height:", height)
+    print("Size:", size)
+
+def get_pixel_value(image, x, y):
+    b, g, r = image[y, x]
+    print("Pixel value at ({}, {}): (R={}, G={}, B={})".format(x, y, r, g, b))
+    
+def plot_histogram(image, title):
+    colors = ('b', 'g', 'r')
+    for i, col in enumerate(colors):
+        histogram = cv2.calcHist([image], [i], None, [256], [0, 256])
+        plt.plot(histogram, color=col)
+        plt.xlim([0, 256])
+    plt.title(title)
+    plt.xlabel('Pixel Value')
+    plt.ylabel('Frequency')
 
     
 
 choice = 0
 while choice != 10:
     main_menu()
-    choice = int(input("Enter your choice (1-4): "))
+    choice = int(input("Enter your choice (1-10): "))
 
     if choice == 1:
         option1()
@@ -199,4 +280,4 @@ while choice != 10:
     elif choice == 10:
         print("Exiting...")
     else:
-        print("Invalid choice. Please enter a number between 1 and 4.")
+        print("Invalid choice. Please enter a number between 1 and 10.")
