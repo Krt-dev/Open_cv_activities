@@ -1,0 +1,1 @@
+#img = cv2.imread("MAR10.jpg", cv2.IMREAD_GRAYSCALE)

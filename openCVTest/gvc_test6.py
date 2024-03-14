@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-
+#Avtivity 4 all
 
 image = cv2.imread('MAR10.jpg')
 
